@@ -39,4 +39,6 @@ const getDB = ()=>{
     return state.db;
 }
 
+// https://www.youtube.com/watch?v=CyTWPr_WwdI
+
 module.exports = {getDB,connect,getPrimaryKey};

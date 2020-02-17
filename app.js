@@ -8,8 +8,11 @@ const db = require('./db');
 const collection = 'todo';
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname + '/views'));
 });
+
+app.set('view engine', 'jsx');
+app.engine('jsx', require('express-react-views').createEngine());
 
 app.put('/:id',(req,res)=>{
     // Primary Key of Todo Document we wish to update
