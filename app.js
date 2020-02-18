@@ -8,11 +8,10 @@ const db = require('./db');
 const collection = 'todo';
 
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname + '/views'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.set('view engine', 'jsx');
-app.engine('jsx', require('express-react-views').createEngine());
+app.use(bodyParser.json());
 
 app.put('/:id',(req,res)=>{
     // Primary Key of Todo Document we wish to update
@@ -31,6 +30,7 @@ app.put('/:id',(req,res)=>{
 
 app.post('/', (req, res) => {
     const userInput = req.body;
+    console.log('userInput ' + JSON.stringify(userInput));
     db.getDB().collection(collection).insertOne(userInput, (err, result) => {
         if(err)
             console.log(err);
@@ -44,7 +44,6 @@ app.get('/getTodos', (req, res) => {
         if(err)
             console.log(err);
         else {
-            console.log(documents);
             res.json(documents);
         }
     })
@@ -52,8 +51,10 @@ app.get('/getTodos', (req, res) => {
 
 //delete
 app.delete('/:id',(req,res)=>{
+ 
     // Primary Key of Todo Document
     const todoID = req.params.id;
+    console.log('delete', todoID);
     // Find Document By ID and delete document from record
     db.getDB().collection(collection).findOneAndDelete({_id : db.getPrimaryKey(todoID)},(err,result)=>{
         if(err)
@@ -75,7 +76,7 @@ db.connect((err)=>{
     // Start up our Express Application
     // And listen for Request
     else{
-        app.listen(3000,()=>{
+        app.listen(3002 , ()=>{
             console.log('connected to database, app listening on port 3000');
         });
     }
